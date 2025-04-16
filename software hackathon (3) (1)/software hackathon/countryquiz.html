@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Capital Quiz</title>
+    <style>
+        body {
+            background-image: url('world.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            font-family: 'Poppins', sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            color: white;
+        }
+
+        .header {
+            text-align: center;
+            font-size: 40px;
+            font-weight: bold;
+            margin-bottom: 10px;
+            letter-spacing: 2px;
+            color: #c6d3d8;
+        }
+
+        .subtitle {
+            text-align: center;
+            font-size: 22px;
+            font-weight: bold;
+            background-color: rgba(0, 0, 0, 0.8);
+            padding: 10px;
+            border-radius: 10px;
+            width: 80%;
+            max-width: 600px;
+        }
+
+        .quiz-container {
+            background: rgba(211, 211, 211, 0.9);
+            padding: 25px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+            border: 2px solid black;
+            margin-top: 20px;
+        }
+
+        .question {
+            margin-bottom: 15px;
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            color: black;
+        }
+
+        .question input {
+            width: 90%;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            text-align: center;
+            background-color: #2b2b2b;
+            color: white;
+            outline: none;
+            transition: background 0.3s ease-in-out;
+        }
+
+        input:focus {
+            background-color: #3d3d3d;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 20px;
+        }
+
+        button {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease-in-out;
+        }
+        .finish-btn{
+            background: red;
+            color:white;
+            margin-right:10px ;
+        }
+        .hint-btn {
+            background: #444;
+            color: white;
+            margin-left: 10px;
+        }
+
+        .hint-btn:hover {
+            background: #666;
+        }
+
+        .submit-btn {
+            background: #00AEEF;
+            color: white;
+        }
+
+        .submit-btn:hover {
+            background: #008FCC;
+        }
+
+        #result {
+            text-align: center;
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 15px;
+            color:olive;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="header">QUIZ !</div>
+    <div class="subtitle">GUESS THE CAPITAL!</div>
+
+    <div class="quiz-container">
+        <form id="quizForm">
+            <div class="question">
+                <label for="ans1">INDIA</label>
+                <input type="text" id="ans1" name="ans1" placeholder="NAME THE CAPTAL!">
+            </div>
+            <div class="question">
+                <label for="ans2">GERMANY</label>
+                <input type="text" id="ans2" name="ans2" placeholder="NAME THE CAPITAL!">
+            </div>
+            <div class="question">
+                <label for="ans3">CHINA</label>
+                <input type="text" id="ans3" name="ans3" placeholder="NAME THE CAPITAL!">
+            </div>
+            <div class="question">
+                <label for="ans4">JAPAN</label>
+                <input type="text" id="ans4" name="ans4" placeholder="NAME THE CAPITAL!">
+            </div>
+            <div class="question">
+                <label for="ans5">FRANCE</label>
+                <input type="text" id="ans5" name="ans5" placeholder="NAME THE CAPITAL!">
+            </div>
+            
+            <div class="button-container">
+                <button type="button" class="hint-btn" onclick="showHint()">Hint</button>
+                <button type="button" class="submit-btn" onclick="checkAnswers()">Submit</button>
+                
+            </div>
+            
+            <div id="result"></div>
+        </form>
+        <div class="button-container"><button class="finish-btn" onclick="finishGame()" style="background: red;">Finish Game</button></div>
+        
+        
+    </div>
+
+    <script>
+        let score=0;
+        function checkAnswers() {
+            let correctAnswers = ["new delhi", "berlin", "beijing", "tokyo", "paris"];
+            let score = 0;
+            
+            for (let i = 1; i <= correctAnswers.length; i++) {
+                let userAnswer = document.getElementById("ans" + i).value.trim().toLowerCase();
+                if (userAnswer === correctAnswers[i - 1]) {
+                    score++;
+                }
+            }
+            
+            document.getElementById("result").innerText = "Your Score: " + score + "/5";
+        }
+
+        function showHint() {
+            window.location.href = 'hint1.html';
+        }
+        function finishGame() {
+            alert(`Returning to the portal...`);
+            window.location.href = 'index.html'; 
+        }
+    </script>
+
+</body>
+</html>

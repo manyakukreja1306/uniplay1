@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Portal</title>
+    <style>
+body {
+    font-family: 'Arial', sans-serif;
+    text-align: center;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 20px;
+}
+#loginForm, #welcomeMessage {
+    background-color: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+    margin: auto;
+}
+h2 {
+    color: #d62828;
+}
+h3 {
+    color: #00509d;
+}
+input {
+    width: 85%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 2px solid #ff8500;
+    border-radius: 5px;
+    font-size: 16px;
+    text-align: center;
+}
+button {
+    width: 100%;
+    padding: 12px;
+    margin: 5px 0;
+    font-size: 16px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-weight: bold;
+    color: white;
+    background-color: #028090;
+}
+button:hover {
+    background-color: #025e73;
+}
+#gameList {
+    list-style: none;
+    padding: 0;
+}
+#gameList li {
+    background-color: #ffb703;
+    padding: 8px;
+    margin: 5px 0;
+    border-radius: 5px;
+    color: #333;
+    font-weight: bold;
+}
+@media (max-width: 500px) {
+    button {
+        font-size: 14px;
+        padding: 10px;
+    }
+    input {
+        font-size: 14px;
+    }
+}   </style>
+</head>
+<body>
+    <div id="loginForm">
+        <h2>Who's Playing Today</h2>
+        <input type="text" id="username" placeholder="Enter your name">
+        <button onclick="saveUsername()">Submit</button>
+    </div>
+    <div id="welcomeMessage" style="display: none;">
+        <h2>Welcome, <span id="displayName"></span>!</h2>
+        <button onclick="logout()">Logout</button>      
+        <h3>Your Game Progress:</h3>
+        <ul id="gameList"></ul>
+        <h3>Net Score: <span id="netScore">0</span></h3>
+        <h3>Play a Game:</h3>
+        <h3>Age 3-6:</h3>
+        <button onclick="window.location.href='fruitquiz.html'">Nursery Fruit Quiz</button>
+        <button onclick="window.location.href='alphabetquiz.html'">Alphabet Quiz(For specially abled)</button>
+        <button onclick="window.location.href='deaf and dumb quiz.html'">Sign Language Quiz(For specially abled)</button>
+        <h3>Age 8-12:</h3>
+        <button onclick="window.location.href='game6.html'">Memory Card Game</button>
+        <button onclick="window.location.href='game3.html'">Memorize</button>
+        <button onclick="window.location.href='game2.html'">Fill If You Can!</button>
+        <button onclick="window.location.href='game7.html'">Scrambled Word</button>
+        <button onclick="window.location.href='countryquiz.html'">Country Capital Quiz</button>
+        <h3>Age 12-15:</h3>
+        <button onclick="window.location.href='game4.html'">Sudoku</button>
+        <button onclick="window.location.href='game5.html'">Guess The Sequence!</button>
+        <button onclick="window.location.href='game8.html'">Stroop Test</button>
+        <h3>Age 16 and Above:</h3>
+        <button onclick="window.location.href='game1.html'">TechMoji</button>
+        <button onclick="window.location.href='pythonquiz.html'">Learner's Python Quiz</button>
+        <button onclick="window.location.href='chemquiz.html'">Chem Quiz</button>
+        
+        
+    </div>
+  <script>
+        function saveUsername() {
+            let username = document.getElementById("username").value;
+            if (username.trim() !== "") {
+                sessionStorage.setItem("username", username);
+                sessionStorage.setItem("games", JSON.stringify({}));  
+                showWelcome();
+            } else {
+                alert("Please enter a valid name.");
+            }
+        }
+        function calculateNetScore() {
+            let games = JSON.parse(sessionStorage.getItem("games")) || {};
+            let totalScore = Object.values(games).reduce((sum, score) => sum + score, 0);
+            document.getElementById("netScore").innerText = totalScore;
+        }
+        function displayGames() {
+            let gameList = document.getElementById("gameList");
+            gameList.innerHTML = "";
+            let games = JSON.parse(sessionStorage.getItem("games")) || {};
+            for (let game in games) {
+                let listItem = document.createElement("li");
+                listItem.textContent = `${game}: Score - ${games[game]}`;
+                gameList.appendChild(listItem);
+            }
+        }
+        function showWelcome() {
+            let username = sessionStorage.getItem("username");
+            if (username) {
+                document.getElementById("displayName").innerText = username;
+                document.getElementById("loginForm").style.display = "none";
+                document.getElementById("welcomeMessage").style.display = "block";
+                displayGames();
+                calculateNetScore();
+            }
+        }
+        function logout() {
+            sessionStorage.clear();
+            document.getElementById("loginForm").style.display = "block";
+            document.getElementById("welcomeMessage").style.display = "none";
+        }
+        window.onload = showWelcome;
+    </script>
+</body>
+</html>

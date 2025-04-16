@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gamified-Education</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header><h1>Login To Your Account</h1></header>
+    <main>
+        <form id="loginForm">
+            <label for="username">Username:</label>
+            <input type="text" id="username" required>
+            <label for="password">Password:</label>
+            <input type="password" id="password" required>
+            <button type="submit">Login</button>
+        </form>
+        <p>Don't have an account? <a href="signup.html">Sign Up</a></p>
+    </main>
+    <footer>
+        <p>&copy; 2025 Learn & Play. All rights Reserved.</p>
+    </footer>
+    <script src="script.js"></script>
+</body>
+</html>
+
+
+<!--index.html  -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game Portal</title>
+    <style>
+        body{
+            font-family: 'Arial',sans serif ;
+            text-align:center;
+            background-color:#f4f4f4;
+            margin:0;
+            padding:20px;
+        }
+        #loginForm, #welcomeMessage{
+           background-color: #ffffff;
+           padding:20px;
+           border-radius: 10px;
+           box-shadow:0 4px 8px rgba(0,0,0,0.1);
+           max-width:400px;
+           margin:auto;
+        }
+        h2{
+            color:#d62828;
+        }
+        h3{
+            color:#00509d;
+        }
+        input{
+            width:85%;
+            padding:10px;
+            margin:10px 0;
+            border: 2px solid #ff8500;
+            border-radius: 5px;
+            font-size: 16px;
+            text-align: center;
+        }
+        button :hover{
+        background-color: #025e73;
+        }
+        #gameList{
+            list-style: none;
+            padding:0;
+        }
+        #gameList li{
+            background-color: #ffb703;
+            padding:8px;
+            margin: 5px 0;
+            border-radius: 5px;
+            color: #333;
+            font-weight: bold;
+        }
+        @media (max-width: 500px){
+            button{
+                font-size: 14px;
+                padding: 10px;
+            }
+            input{
+                font-size: 14px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="loginForm">
+        <h2>Who's Playing Today</h2>
+        <input type="text" id="username" placeholder="Enter Your Name">
+        <button onclick="saveUsername()">Submit</button>
+    </div>
+    <div id="welcomeMessage" style="display:none">
+        <h2>Welcome, <span id="displayName"></span>!</h2>
+        <button onclick="logout()">Logout</button>
+        <h3>Your Game Progress:</h3>
+        <ul id="gameList"></ul>
+        <h3>Net Score:<span id="netScore">0</span></h3>
+    </div>
+</body>
+</html>

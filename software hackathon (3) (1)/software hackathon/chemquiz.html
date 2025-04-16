@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chemistry Quiz</title>
+    <style>
+        body {
+            background-color: #f4f4f4;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+        .header {
+            background: #333;
+            color: white;
+            padding: 15px;
+            font-size: 24px;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+        }
+        .question {
+            text-align: left;
+            margin-bottom: 15px;
+        }
+        input {
+            width: 100%;
+            padding: 8px;
+            font-size: 16px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .button {
+            background: #28a745;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .button:hover {
+            background: #218838;
+        }
+        .hint-button {
+            background: #007bff;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        .hint-button:hover {
+            background: #0056b3;
+        }
+        #result {
+            margin-top: 15px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">Chemistry Quiz</div>
+    <div class="container">
+        <form id="quizForm">
+            <div class="question">
+                <label>What is the chemical symbol for Gold?</label>
+                <input type="text" id="ans1">
+            </div>
+            <div class="question">
+                <label>What is the pH of pure water?</label>
+                <input type="text" id="ans2">
+            </div>
+            <div class="question">
+                <label>Which gas is required for combustion?</label>
+                <input type="text" id="ans3">
+            </div>
+            <div class="question">
+                <label>What is the lightest element?</label>
+                <input type="text" id="ans4">
+            </div>
+            <div class="question">
+                <label>Which acid is found in lemons?</label>
+                <input type="text" id="ans5">
+            </div>
+
+            <button type="button" class="button" onclick="checkAnswers()">Submit</button>
+            <button type="button" class="hint-button" onclick="openHintPage()">Show Hint</button>
+            
+            <div id="result"></div>
+        </form>
+    </div>
+
+    <script>
+        function checkAnswers() {
+            let answers = ["au", "7", "oxygen", "hydrogen", "citric acid"];
+            let score = 0;
+            
+            for (let i = 1; i <= answers.length; i++) {
+                let userAnswer = document.getElementById("ans" + i).value.trim().toLowerCase();
+                if (userAnswer === answers[i - 1]) {
+                    score++;
+                }
+            }
+            
+            document.getElementById("result").innerText = `Your Score: ${score} / 5`;
+        }
+
+        function openHintPage() {
+            window.location.href='hint789.html';
+        }
+    </script>
+</body>
+</html>

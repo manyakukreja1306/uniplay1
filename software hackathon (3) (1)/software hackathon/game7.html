@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Word Scramble</title>
+</head>
+<body>
+    <h2>Scrambled Word: <span id="word"></span></h2>
+    <input type="text" id="guess">
+    <button onclick="checkAnswer()">Submit</button>
+    <h3>Score: <span id="score">0</span></h3>
+    <button class="button" onclick="finishGame()" style="background: RED;">Finish Game</button>
+
+    <script>
+        const words = ["READING", "SPORTS", "ORANGE", "MEDITATE", "CONCEPTION", "EXPERIMENT", "CIRCUMPOSE", "ASTRONOMID", "APPLICATION"];
+        let word = words[Math.floor(Math.random() * words.length)];
+        document.getElementById("word").innerText = word.split('').sort(() => Math.random() - 0.5).join('');
+
+        let score = sessionStorage.getItem("wordScrambleScore") ? parseInt(sessionStorage.getItem("wordScrambleScore")) : 0;
+        document.getElementById("score").innerText = score;
+
+        function checkAnswer() {
+            if (document.getElementById("guess").value.toUpperCase() === word) {
+                score += 10;
+                sessionStorage.setItem("wordScrambleScore", score); // Save score
+                document.getElementById("score").innerText = score;
+                location.reload();
+            }
+        }
+        function finishGame() {
+            let games = JSON.parse(sessionStorage.getItem("games")) || {};
+            games["Scramble Word Game"] = score;
+            sessionStorage.setItem("games", JSON.stringify(games));
+            alert(`Your final score: ${score}. Returning to the portal...`);
+            window.location.href = "index.html";
+        }
+    </script>
+</body>
+</html>

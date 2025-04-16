@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Python Quiz</title>
+    <style>
+        body {
+            background: url('python.png') no-repeat center center/cover;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .header {
+            background: rgba(0, 0, 0, 0.8);
+            color: white;
+            padding: 15px;
+            font-size: 24px;
+            width: 100%;
+            text-align: center;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.9);
+            max-width: 500px;
+            padding: 20px;
+            margin: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+            text-align: center;
+        }
+        .question {
+            text-align: left;
+            margin-bottom: 15px;
+            font-weight: bold;
+        }
+        input {
+            width: 100%;
+            padding: 10px;
+            font-size: 16px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            box-sizing: border-box;
+        }
+        .button {
+            background: #007bff;
+            color: white;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            margin-top: 10px;
+            width: 20%;
+        }
+        .button:hover {
+            background: #0056b3;
+        }
+        #result {
+            margin-top: 15px;
+            font-size: 18px;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">Python Quiz</div>
+    <div class="container">
+        <form id="quizForm">
+            <div class="question">
+                <label>What function is used to display output in Python?</label>
+                <input type="text" id="ans1" placeholder="Your answer">
+            </div>
+            <div class="question">
+                <label>Which data type is immutable in Python?</label>
+                <input type="text" id="ans2" placeholder="Your answer">
+            </div>
+            <div class="question">
+                <label>What is the result of type(10/2)?</label>
+                <input type="text" id="ans3" placeholder="Your answer">
+            </div>
+            <div class="question">
+                <label>Which keyword is used to define a function in Python?</label>
+                <input type="text" id="ans4" placeholder="Your answer">
+            </div>
+            <div class="question">
+                <label>How do you write a comment in Python?</label>
+                <input type="text" id="ans5" placeholder="Your answer">
+            </div>
+            <button type="button" class="button" onclick="checkAnswers()">Submit</button>
+            <button type="button" class="button" onclick="gotomainpg()">Finish</button>
+            <button type="button" class="button" onclick="gotohintpg()">Hint</button>
+            <div id="result"></div>
+            <!-- <button onclick="finishGame()" style="background: red;">Finish Game</button> -->
+        </form>
+    </div>
+    <script>
+        function checkAnswers() {
+            let answers = ["print", "tuple", "float", "def", "#"];
+            let score = 0;
+            
+            for (let i = 1; i <= answers.length; i++) {
+                let userAnswer = document.getElementById("ans" + i).value.trim().toLowerCase();
+                if (userAnswer === answers[i - 1]) {
+                    score++;
+                }
+            }
+            
+            document.getElementById("result").innerText = "Your Score:"+ score +"/ 5";
+        }
+        function gotomainpg(){
+            window.location.href="index.html";
+        }
+        function gotohintpg(){
+            window.location.href="HINT2.html";
+        }
+        // function finishGame() {
+        //     let games = JSON.parse(sessionStorage.getItem("games")) || {};
+        //     games["Python Quiz"] = score;
+        //     sessionStorage.setItem("games", JSON.stringify(games));
+        //     alert(`Your final score: ${score}. Returning to the portal...`);
+        //     window.location.href = 'index.html'; 
+        // }
+    </script>
+</body>
+</html>

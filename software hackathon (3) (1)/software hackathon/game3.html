@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Number Recall Game</title>
+    <style>
+        body { text-align: center; font-family: Arial, sans-serif; }
+        #number { font-size: 2em; margin-bottom: 20px; }
+        .button { padding: 10px 20px; font-size: 18px; cursor: pointer; background: #007BFF; color: white; border: none; border-radius: 5px; }
+        .button:hover { background: #0056b3; }
+    </style>
+</head>
+<body>
+    <h2>Number Recall Game</h2>
+    <p>Memorize the number and type it!</p>
+    <div id="number"></div>
+    <input type="text" id="userInput" placeholder="Enter number">
+    <button class="button" onclick="checkNumber()">Submit</button>
+    <h3 id="status"></h3>
+    <h3>Score: <span id="score">0</span></h3>
+    <button class="button" onclick="startGame()">New Game</button>
+    <!-- <button class="button" onclick="finishGame()">Finish Game</button> -->
+    <button class="button" onclick="finishGame()" style="background: cyan;">Finish Game</button>
+    <script>
+        let number;
+        let score = sessionStorage.getItem("numberRecallScore") ? parseInt(sessionStorage.getItem("numberRecallScore")) : 0;
+        document.getElementById("score").innerText = score;
+        function startGame() {
+            number = Math.floor(100000 + Math.random() * 900000); 
+            document.getElementById("number").innerText = number;
+            setTimeout(() => { document.getElementById("number").innerText = ""; }, 1200);
+        }
+        function checkNumber() {
+            let userInput = document.getElementById("userInput").value;
+            if (userInput == number) {
+                document.getElementById("status").innerText = "Correct!";
+                score += 10;
+            } else {
+                document.getElementById("status").innerText = "Wrong! Try Again.";
+            }
+            document.getElementById("score").innerText = score;
+            sessionStorage.setItem("numberRecallScore", score);
+            document.getElementById("userInput").value = "";
+        }
+
+        // function finishGame() {
+        //     sessionStorage.setItem("numberRecallScore", score);
+        //     window.location.href = "index.html";
+        // }
+        function finishGame() {
+            let games = JSON.parse(sessionStorage.getItem("games")) || {};
+            games["Number Memorization Game"] = score;
+            sessionStorage.setItem("games", JSON.stringify(games));
+            alert(`Your final score: ${score}. Returning to the portal...`);
+            window.location.href = "index.html";
+        }
+
+        startGame();
+    </script>
+</body>
+</html>

@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Emoji Guessing Game</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            background: #f4f4f4;
+            color: #333;
+            margin: 0;
+            padding: 20px;
+        }
+        .game-container {
+            max-width: 350px;
+            margin: auto;
+            padding: 20px;
+            border-radius: 10px;
+            background: white;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        .emoji {
+            font-size: 2.5rem;
+            margin: 20px 0;
+        }
+        input, select, button {
+            padding: 10px;
+            font-size: 1rem;
+            margin-top: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            width: 90%;
+        }
+        button {
+            background: #007bff;
+            color: white;
+            cursor: pointer;
+        }
+        button:hover {
+            background: #0056b3;
+        }
+        #result {
+            font-weight: bold;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Emoji Guessing Game</h1>
+    <label for="level">Select Difficulty:</label>
+    <select id="level" onchange="changeLevel()">
+        <option value="medium">Medium</option>
+        <option value="hard">Hard</option>
+    </select>
+    <div class="game-container">
+        <div id="emoji-display" class="emoji"></div>
+        <input type="text" id="guess" placeholder="Enter your guess">
+        <button onclick="checkGuess()">Submit</button>
+        <p id="result"></p>
+        <p>Score: <span id="score">0</span></p>
+        <button onclick="finishGame()" style="background: red;">Finish Game</button>
+    </div>
+    
+    <script>
+        const levels = {
+            medium: [
+                { emoji: "❌🍽️📄", answer: "Cross Platform" },
+                { emoji: "👨‍💻🍎", answer: "Steve Jobs" },
+                { emoji: "💻🧑‍🏫", answer: "Machine Learning" },
+                { emoji: "☁️💻", answer: "Cloud Computing" },
+                { emoji: "📦🔗", answer: "Blockchain" },
+                { emoji: "📊🔒", answer: "Data Encryption" },
+                { emoji: "🧠🔗🛜", answer: "Neural Network" },
+                { emoji: "⏪⬆🔃✅", answer: "Backup Processing" },
+                { emoji: "🥽🧠", answer: "Virtual Reality" },
+                { emoji: "🔥🧱", answer: "Firewall" }
+            ],
+            hard: [
+                { emoji: "🗂️📤", answer: "File Upload" },
+                { emoji: "🛜🔒", answer: "Internet Security" },
+                { emoji: "⚛💻", answer: "Quantum Computing" },
+                { emoji: "📱⬆️📅", answer: "App Update" },
+                { emoji: "👨‍⚕💻", answer: "Operating System" },
+                { emoji: "🐛🔍", answer: "Debugging" },
+                { emoji: "🦠🛡️", answer: "Antivirus" },
+                { emoji: "🖼️🔍", answer: "Image Search" },
+                { emoji: "🕸️🏗️🚀", answer: "Website Launch" },
+                { emoji: "🎤📝", answer: "Voice Recognition" }
+            ]
+        };
+
+        let currentLevel = "medium";
+        let score = 0;
+
+        function getRandomQuestion() {
+            return levels[currentLevel][Math.floor(Math.random() * levels[currentLevel].length)];
+        }
+
+        function loadQuestion() {
+            const question = getRandomQuestion();
+            document.getElementById("emoji-display").innerText = question.emoji;
+            document.getElementById("emoji-display").dataset.answer = question.answer;
+        }
+
+        function checkGuess() {
+            const userGuess = document.getElementById("guess").value.trim();
+            const correctAnswer = document.getElementById("emoji-display").dataset.answer;
+            const resultDisplay = document.getElementById("result");
+
+            if (userGuess.toLowerCase() === correctAnswer.toLowerCase()) {
+                score+=10;
+                document.getElementById("score").innerText = score;
+                resultDisplay.innerText = "Correct!";
+            } else {
+                resultDisplay.innerText = "Wrong! The answer was: " + correctAnswer;
+            }
+
+            setTimeout(() => {
+                document.getElementById("guess").value = "";
+                resultDisplay.innerText = "";
+                loadQuestion();
+            }, 2000);
+        }
+
+        function changeLevel() {
+            currentLevel = document.getElementById("level").value;
+            score = 0;
+            document.getElementById("score").innerText = score;
+            loadQuestion();
+        }
+
+        function finishGame() {
+            let games = JSON.parse(sessionStorage.getItem("games")) || {};
+            games["Emoji Guessing Game"] = score;
+            sessionStorage.setItem("games", JSON.stringify(games));
+            alert(`Your final score: ${score}. Returning to the portal...`);
+            window.location.href = "index.html"; 
+        }
+
+        loadQuestion();
+    </script>
+</body>
+</html>

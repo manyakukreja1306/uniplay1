@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Missing Letter Game</title>
+    <style>
+        body { text-align: center; font-family: Arial, sans-serif; }
+        .button { padding: 10px 20px; font-size: 18px; cursor: pointer; background: #dc3545; color: white; border: none; border-radius: 5px; margin: 5px;}
+        .button:hover { background: #c82333; }
+        #word { font-size: 2em; margin-bottom: 20px; }
+    </style>
+</head>
+<body>
+    <h2>Missing Letter Game</h2>
+    <p>Guess the missing letter!</p>
+    <div id="word"></div>
+    <input type="text" id="userInput" placeholder="Enter letter" maxlength="1">
+    <button class="button" onclick="checkLetter()">Submit</button>
+    <h3 id="status"></h3>
+    <h3>Score: <span id="score">0</span></h3>
+    <button class="button" onclick="startGame()">New Round</button>
+    <button class="button" onclick="finishGame()" style="background: red;">Finish Game</button>
+
+    <script>
+        //let words = ["hello", "world", "apple", "banana", "orange", "guitar", "planet", "sunshine", "river", "galaxy"];
+        let words = ["conundrum", "perception", "enigmatic", "quizzical", "astronomy", "paradoxical", "obfuscation", "labyrinth", "juxtapose", "metamorphosis"];
+        let chosenWord, missingIndex, correctLetter, score = 0;
+
+        function startGame() {
+            chosenWord = words[Math.floor(Math.random() * words.length)];
+            missingIndex = Math.floor(Math.random() * chosenWord.length);
+            correctLetter = chosenWord[missingIndex];
+
+            let displayWord = chosenWord.substring(0, missingIndex) + "_" + chosenWord.substring(missingIndex + 1);
+            document.getElementById("word").innerText = displayWord;
+            document.getElementById("status").innerText = "";
+            document.getElementById("userInput").value = "";
+        }
+
+        function checkLetter() {
+            let userInput = document.getElementById("userInput").value.toLowerCase();
+            if (userInput === correctLetter) {
+                document.getElementById("status").innerText = "Correct!";
+                score += 10;
+            } else {
+                document.getElementById("status").innerText = "Wrong! Try Again.";
+            }
+            document.getElementById("score").innerText = score;
+            document.getElementById("userInput").value = "";
+        }
+
+        function finishGame() {
+            let games = JSON.parse(sessionStorage.getItem("games")) || {};
+            games["Missing Letter Game"] = score;
+            sessionStorage.setItem("games", JSON.stringify(games));
+            alert(`Your final score: ${score}. Returning to the portal...`);
+            window.location.href = "index.html";
+        }
+
+        startGame();
+    </script>
+</body>
+</html>

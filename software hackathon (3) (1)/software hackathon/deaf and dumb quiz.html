@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Language Emoji Quiz</title>
+    <style>
+        body { font-family: Arial, sans-serif; text-align: center; background-color: #f5f5f5; }
+        .mainheader { background-color: #0077cc; color: white; padding: 20px; font-size: 24px; }
+        .container { margin: 20px auto; width: 60%; padding: 20px; background: white; border-radius: 10px; box-shadow: 2px 2px 10px rgba(0,0,0,0.1); }
+        .question { font-size: 22px; margin: 15px 0; }
+        button { padding: 10px 20px; font-size: 18px; background-color: #28a745; color: white; border: none; cursor: pointer; margin-top: 15px; }
+        button:hover { background-color: #218838; }
+        #result { font-size: 22px; font-weight: bold; margin-top: 20px; }
+        .celebration { display: none; font-size: 30px; margin-top: 20px; }
+    </style>
+</head>
+<body>
+    <div class="mainheader">Sign Language Emoji Quiz</div>
+    <div class="container">
+        <form id="quizForm">
+            <div class="question">
+                <p>What does this sign mean? ✋👋</p>
+                <label><input type="radio" name="q1" value="hello"> Hello</label><br>
+                <label><input type="radio" name="q1" value="bye"> Goodbye</label><br>
+                <label><input type="radio" name="q1" value="thankyou"> Thank You</label>
+            </div>
+            <div class="question">
+                <p>What does this sign mean? 🤲🙏</p>
+                <label><input type="radio" name="q2" value="sorry"> Sorry</label><br>
+                <label><input type="radio" name="q2" value="thankyou"> Thank You</label><br>
+                <label><input type="radio" name="q2" value="please"> Please</label>
+            </div>
+            <div class="question">
+                <p>What does this sign mean? 🤟❤️</p>
+                <label><input type="radio" name="q3" value="love"> Love</label><br>
+                <label><input type="radio" name="q3" value="help"> Help</label><br>
+                <label><input type="radio" name="q3" value="friend"> Friend</label>
+            </div>
+            <div class="question">
+                <p>What does this sign mean? ✊🤝</p>
+                <label><input type="radio" name="q4" value="sorry"> Sorry</label><br>
+                <label><input type="radio" name="q4" value="help"> Help</label><br>
+                <label><input type="radio" name="q4" value="family"> Family</label>
+            </div>
+            <div class="question">
+                <p>What does this sign mean? 🏠🤗</p>
+                <label><input type="radio" name="q5" value="family"> Family</label><br>
+                <label><input type="radio" name="q5" value="home"> Home</label><br>
+                <label><input type="radio" name="q5" value="welcome"> Welcome</label>
+            </div>
+            <button type="button" onclick="checkAnswers()">Submit</button>
+            <div id="result"></div>
+            <div class="celebration" id="celebration">🎉👏 Congratulations! 🎊🎶</div>
+        </form>
+        <button type="button" onclick="endGame()">Finish</button>
+    </div>
+    <script>
+        let correctAnswers = {
+            q1: "hello",
+            q2: "thankyou",
+            q3: "love",
+            q4: "help",
+            q5: "home"
+        };
+        function checkAnswers() {
+            let score = 0;
+            let totalQuestions = Object.keys(correctAnswers).length;
+            for (let key in correctAnswers) {
+                let selectedOption = document.querySelector(`input[name="${key}"]:checked`);
+                if (selectedOption && selectedOption.value === correctAnswers[key]) {
+                    score++;
+                }
+            }
+            document.getElementById("result").innerText = "Your Score: " + score + "/" + totalQuestions;
+
+            if (score === totalQuestions) {
+                document.getElementById("celebration").style.display = "block";
+            }
+        }
+        function endGame(){
+            window.location.href="index.html";
+        }
+    </script>
+</body>
+</html>

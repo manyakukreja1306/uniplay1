@@ -1,0 +1,139 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stroop Test (Color-Blind Mode)</title>
+    <style>
+        body { text-align: center; font-family: Arial, sans-serif; }
+        .button { 
+            padding: 10px 15px; 
+            font-size: 18px; 
+            cursor: pointer; 
+            margin: 5px; 
+            border: none; 
+            border-radius: 5px;
+            width: 120px; 
+            height: 50px;
+        }
+        .game-box { font-size: 2em; margin: 20px; }
+        .score-box { font-size: 1.2em; margin-top: 10px; }
+        #status { font-weight: bold; margin-top: 10px; }
+        .hidden { display: none; }
+    </style>
+</head>
+<body>
+    <h2>Stroop Test (Color-Blind Mode)</h2>
+    <p>Select the color of the word (not the text itself)!</p>
+
+    <div id="modeSelection">
+        <h3>Choose Your Vision Type:</h3>
+        <button class="button" onclick="startGame('normal')" style="background: green; color: white;">Normal Vision</button>
+        <button class="button" onclick="showColorBlindOptions()" style="background: orange;">I am Color-Blind</button>
+    </div>
+
+    <div id="colorBlindSelection" class="hidden">
+        <h3>Select Your Color-Blind Type:</h3>
+        <button class="button" onclick="startGame('red-green')" style="background: lightcoral;">Red/Green Blind</button>
+        <button class="button" onclick="startGame('blue-yellow')" style="background: lightskyblue;">Blue/Yellow Blind</button>
+        <button class="button" onclick="startGame('monochrome')" style="background: gray;">Total Color Blind</button>
+    </div>
+
+    <div id="gameContainer" class="hidden">
+        <div class="game-box" id="wordDisplay"></div>
+
+        <div id="buttonsContainer"></div>
+
+        <div class="score-box">
+            <h3>Score: <span id="score">0</span></h3>
+        </div>
+
+        <h3 id="status"></h3>
+        <button class="button" onclick="startGame(currentMode)" style="background: #007BFF; color: white;">Restart</button>
+        <button class="button" onclick="finishGame()" style="background: red;">Finish Game</button>
+    </div>
+
+    <script>
+        let colors = ["red", "blue", "green", "yellow", "orange", "pink", "purple", "cyan", "brown", "white"];
+        let filteredColors = [];
+        let currentMode = "normal";
+        let score = 0;
+        let correctColor = "";
+
+        function showColorBlindOptions() {
+            document.getElementById("modeSelection").classList.add("hidden");
+            document.getElementById("colorBlindSelection").classList.remove("hidden");
+        }
+
+        function startGame(mode) {
+            currentMode = mode;
+            document.getElementById("modeSelection").classList.add("hidden");
+            document.getElementById("colorBlindSelection").classList.add("hidden");
+            document.getElementById("gameContainer").classList.remove("hidden");
+            if (mode === "red-green") {
+                filteredColors = ["blue", "yellow", "orange", "pink", "purple", "cyan", "white"];
+            } else if (mode === "blue-yellow") {
+                filteredColors = ["red", "green", "orange", "pink", "purple", "brown", "white"];
+            } else if (mode === "monochrome") {
+                filteredColors = ["black", "gray", "white"];
+            } else {
+                filteredColors = [...colors];
+            }
+
+            score = 0;
+            document.getElementById("score").innerText = score;
+            newRound();
+        }
+
+        function newRound() {
+            if (filteredColors.length < 2) {
+                alert("Not enough colors to play this mode.");
+                window.location.reload();
+                return;
+            }
+
+            let word = filteredColors[Math.floor(Math.random() * filteredColors.length)];
+            correctColor = filteredColors[Math.floor(Math.random() * filteredColors.length)];
+
+            document.getElementById("wordDisplay").innerText = word.toUpperCase();
+            document.getElementById("wordDisplay").style.color = correctColor;
+
+            generateButtons();
+        }
+
+        function generateButtons() {
+            let container = document.getElementById("buttonsContainer");
+            container.innerHTML = "";
+
+            filteredColors.forEach(color => {
+                let btn = document.createElement("button");
+                btn.className = "button";
+                btn.style.backgroundColor = color;
+                btn.innerText = color.charAt(0).toUpperCase() + color.slice(1);
+                btn.onclick = () => checkColor(color);
+                container.appendChild(btn);
+            });
+        }
+
+        function checkColor(selectedColor) {
+            if (selectedColor === correctColor) {
+                score += 10;
+                document.getElementById("status").innerText = "Correct!";
+            } else {
+                document.getElementById("status").innerText = "Wrong!";
+            }
+            document.getElementById("score").innerText = score;
+            newRound();
+        }
+
+        function finishGame() {
+            let games = JSON.parse(sessionStorage.getItem("games")) || {};
+            games["Stroop Test (Color-Blind Mode)"] = score;
+            sessionStorage.setItem("games", JSON.stringify(games));
+            alert(`Your final score: ${score}. Returning to the portal...`);
+            window.location.href = "index.html"; 
+        }
+    </script>
+</body>
+</html>

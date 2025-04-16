@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Quiz-Programming</title>
+    <style>
+        .mainheader {
+            display: flex;
+            background-color: aliceblue;
+            justify-content: center;
+            align-items: center;
+            height: 100px;
+            width: 100%;
+        }
+        .topic {
+            display: flex;
+            background-color: black;
+            height: 60px;
+            width: 100%;
+            justify-content: center;
+            align-items: center;
+        }
+        h1 { color: black; }
+        h2 { color: white; font-family: Georgia, 'Times New Roman', Times, serif; }
+        .container {
+            display: flex;
+            background-color: antiquewhite;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            padding: 20px;
+        }
+        .quesanscont {
+            display: flex;
+            flex-direction: column;
+            background-color: lightgray;
+            border: solid black 2px;
+            border-radius: 10px;
+            padding: 20px;
+            width: 80%;
+            max-width: 600px;
+        }
+        .question { margin-bottom: 15px; }
+        .question img {
+            width: 100px;
+            height: 100px;
+            display: block;
+            margin: 10px auto;
+        }
+        .question input {
+            display: block;
+            width: 100%;
+            padding: 5px;
+            margin-top: 5px;
+            text-align: center;
+        }
+        #result {
+            text-align: center;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="mainheader"><h1>QUIZ !</h1></div>
+    <div class="topic"><h2>Identify The Fruits!</h2></div>
+    <div class="container">
+        <form id="quizForm">
+            <div class="quesanscont">
+                <div class="question">
+                    <label for="ans1">Question 1:</label>
+                    <img src="fruit1.jpeg" alt="Fruit 1">
+                    <input type="text" id="ans1" name="ans1" placeholder="Name The Fruit!">
+                </div>
+                <div class="question">
+                    <label for="ans2">Question 2:</label>
+                    <img src="fruit2.jpeg" alt="Fruit 2">
+                    <input type="text" id="ans2" name="ans2" placeholder="Name The Fruit!">
+                </div>
+                <div class="question">
+                    <label for="ans3">Question 3:</label>
+                    <img src="fruit3.jpeg" alt="Fruit 3">
+                    <input type="text" id="ans3" name="ans3" placeholder="Name The Fruit!">
+                </div>
+                <div class="question">
+                    <label for="ans4">Question 4:</label>
+                    <img src="fruit4.jpg" alt="Fruit 4">
+                    <input type="text" id="ans4" name="ans4" placeholder="Name The Fruit!">
+                </div>
+                <div class="question">
+                    <label for="ans5">Question 5:</label>
+                    <img src="fruit5.jpeg" alt="Fruit 5">
+                    <input type="text" id="ans5" name="ans5" placeholder="Name The Fruit!">
+                </div>
+                <button type="button" onclick="showHint()">Hint</button><br>
+                <button type="button" onclick="checkAnswers()">Submit</button><br>
+                <button type="button" onclick="finishGame()">Finish</button>
+                <div id="result"></div>
+                </div>
+        </form>
+        
+    <script>
+        function checkAnswers() {
+            let correctAnswers = ["pomegranate", "banana", "apple", "kiwi", "orange"];
+            let score = 0;
+            
+            for (let i = 1; i <= correctAnswers.length; i++) {
+                let userAnswer = document.getElementById("ans" + i).value.trim().toLowerCase();
+                if (userAnswer === correctAnswers[i - 1]) {
+                    score++;
+                }
+            }
+            
+            document.getElementById("result").innerText = "Your Score: " + score + "/5";
+        }
+        function showHint(){
+            window.location.href='hint.html';
+        }
+        function finishGame() {
+            alert(`Returning to the portal...`);
+            window.location.href ="index.html"; }
+        
+    </script>
+</body>
+</html>

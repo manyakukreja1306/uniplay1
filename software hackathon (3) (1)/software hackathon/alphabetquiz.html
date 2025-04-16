@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alphabet Quiz (For Blind Children)</title>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .mainheader {display: flex;background-color: aliceblue;justify-content: center;align-items: center;height: 100px;width: 100%;
+        }
+        .topic {display: flex;background-color: black; height: 60px; width: 100%;justify-content: center;align-items: center;
+        }
+        h1 { color: black; }
+        h2 { color: white; font-family: Georgia, 'Times New Roman', Times, serif; }
+        .container {display: flex;background-color: antiquewhite;align-items: center;justify-content: center;width: 100%;padding: 20px;
+        }
+        .quesanscont {display: flex;flex-direction: column;background-color: lightgray;border: solid black 2px;border-radius: 10px;padding: 20px;width: 80%;max-width: 600px;
+        }
+        .question { margin-bottom: 15px; }
+        .question input {display: block;width: 100%;padding: 5px;margin-top: 5px;text-align: center;font-size: 20px;}
+        button {margin-top: 10px;padding: 10px;font-size: 18px;}
+        #result {text-align: center;font-size: 18px;font-weight: bold;margin-top: 10px;}
+    </style>
+</head>
+<body>
+    <div class="mainheader"><h1>Alphabet Quiz</h1></div>
+    <div class="topic"><h2>Type the Letter You Hear. Use Enter or Arrow Keys to Navigate.</h2></div>
+    <div class="container">
+        <form id="quizForm">
+            <div class="quesanscont">
+                <div class="question"><label for="ans1">Question 1:</label><input type="text" id="ans1" maxlength="1" placeholder="Enter the letter"></div>
+                <div class="question"><label for="ans2">Question 2:</label><input type="text" id="ans2" maxlength="1" placeholder="Enter the letter"></div>
+                <div class="question"><label for="ans3">Question 3:</label><input type="text" id="ans3" maxlength="1" placeholder="Enter the letter"></div>
+                <div class="question"><label for="ans4">Question 4:</label><input type="text" id="ans4" maxlength="1" placeholder="Enter the letter"></div>
+                <div class="question"><label for="ans5">Question 5:</label><input type="text" id="ans5" maxlength="1" placeholder="Enter the letter"></div>
+                <div class="question"><label for="ans6">Question 6:</label><input type="text" id="ans6" maxlength="1" placeholder="Enter the letter"></div>
+                <div class="question"><label for="ans7">Question 7:</label><input type="text" id="ans7" maxlength="1" placeholder="Enter the letter"></div>
+                <div class="question"><label for="ans8">Question 8:</label><input type="text" id="ans8" maxlength="1" placeholder="Enter the letter"></div>
+                <div class="question"><label for="ans9">Question 9:</label><input type="text" id="ans9" maxlength="1" placeholder="Enter the letter"></div>
+                <button type="button" id="replayBtn">Replay Audio</button>
+                <button type="button" id="submitBtn">Submit</button>
+                <div id="result"></div>
+            </div>
+        </form>
+    </div>
+    <script>
+        const correctAnswers = ["a", "c", "e", "g", "j", "m", "p", "s", "u"];
+        function speakLetter(letter) {
+            return new Promise((resolve, reject) => {
+                if ('speechSynthesis' in window) {
+                    console.log(`Speaking letter: ${letter}`);
+                    const utterance = new SpeechSynthesisUtterance(letter);
+                    utterance.rate = 0.7;
+                    utterance.onend = resolve;
+                    utterance.onerror = reject;
+                    window.speechSynthesis.speak(utterance);
+                } else {
+                    console.error('Speech synthesis not supported');
+                    reject(new Error('Speech synthesis not supported'));
+                }
+            });
+        }
+        async function speakQuestions() {
+            console.log('Starting to speak questions');
+            window.speechSynthesis.cancel();
+            try {
+                for (const letter of correctAnswers) {
+                    await speakLetter(letter);
+                    await new Promise(resolve => setTimeout(resolve, 700)); // Pause between letters
+                }
+            } catch (error) {
+                console.error('Error speaking letters:', error);
+            }
+        }
+        function checkAnswers() {
+            let score = 0;
+            for (let i = 0; i < correctAnswers.length; i++) {
+                let userAnswer = document.getElementById("ans" + (i + 1)).value.trim().toLowerCase();
+                if (userAnswer === correctAnswers[i]) {
+                    score++;
+                }
+            }
+            const resultDiv = document.getElementById("result");
+            resultDiv.innerText = `Your Score: ${score}/9`;
+            const scoreUtterance = new SpeechSynthesisUtterance(`Your score is ${score} out of 9`);
+            window.speechSynthesis.speak(scoreUtterance);
+            window.location.href="index.html";
+        }
+        function initializeQuiz() {
+            console.log('Initializing quiz');
+            document.body.addEventListener('click', function initSpeech() {
+                console.log('First user interaction detected');
+                speakQuestions();
+                document.body.removeEventListener('click', initSpeech);
+            });
+            document.getElementById('replayBtn').addEventListener('click', speakQuestions);
+            document.getElementById('submitBtn').addEventListener('click', checkAnswers);
+            const inputs = document.querySelectorAll('input');
+            inputs.forEach((input, index) => {
+                input.addEventListener('keydown', (event) => {
+                    if (event.key === 'Enter' || event.key === 'ArrowDown') {
+                        event.preventDefault();
+                        if (index < inputs.length - 1) {
+                            inputs[index + 1].focus();
+                        }
+                    } else if (event.key === 'ArrowUp') {
+                        event.preventDefault();
+                        if (index > 0) {
+                            inputs[index - 1].focus();
+                        }
+                    }
+                });
+            });
+            inputs[0].focus();
+        }
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializeQuiz);
+        } else {
+            initializeQuiz();
+        }
+    </script>
+</body>
+</html>
